@@ -2,85 +2,102 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download, Settings, Code } from "lucide-react";
-import { ResourceConfig } from "@/components/ResourceConfig";
-import { IngressConfig } from "@/components/IngressConfig";
-import { ServiceConfig } from "@/components/ServiceConfig";
-import { StorageConfig } from "@/components/StorageConfig";
-import { EnvConfig } from "@/components/EnvConfig";
+import { InstanceConfig } from "@/components/InstanceConfig";
+import { DatabaseConfig } from "@/components/DatabaseConfig";
+import { KestraConfig } from "@/components/KestraConfig";
+import { DeploymentConfig } from "@/components/DeploymentConfig";
 import { YamlPreview } from "@/components/YamlPreview";
 import { generateYaml } from "@/lib/yaml-generator";
 import { useToast } from "@/hooks/use-toast";
 
-interface HelmValues {
-  replicaCount: number;
+interface KestraHelmValues {
   image: {
     repository: string;
     tag: string;
     pullPolicy: string;
   };
-  resources: {
-    limits: {
-      cpu: string;
-      memory: string;
+  imagePullSecrets: {
+    name: string;
+  };
+  configuration: {
+    datasources: {
+      uri: string;
+      username: string;
+      password: string;
+      options: string;
     };
-    requests: {
-      cpu: string;
-      memory: string;
+    kestra: {
+      secrets: string;
+      ee: {
+        license: {
+          id: string;
+          key: string;
+          fingerprint: string;
+        };
+      };
     };
   };
-  ingress: {
+  webserver: {
     enabled: boolean;
-    className: string;
-    host: string;
-    tls: boolean;
   };
-  service: {
-    type: string;
-    port: number;
-  };
-  persistence: {
+  executor: {
     enabled: boolean;
-    size: string;
-    storageClass: string;
   };
-  env: Array<{ name: string; value: string }>;
+  worker: {
+    enabled: boolean;
+  };
+  scheduler: {
+    enabled: boolean;
+  };
+  standalone: {
+    enabled: boolean;
+  };
 }
 
 const Index = () => {
   const { toast } = useToast();
-  const [values, setValues] = useState<HelmValues>({
-    replicaCount: 1,
+  const [values, setValues] = useState<KestraHelmValues>({
     image: {
-      repository: "nginx",
+      repository: "kestra/kestra",
       tag: "latest",
       pullPolicy: "IfNotPresent"
     },
-    resources: {
-      limits: {
-        cpu: "500m",
-        memory: "512Mi"
+    imagePullSecrets: {
+      name: ""
+    },
+    configuration: {
+      datasources: {
+        uri: "",
+        username: "",
+        password: "",
+        options: ""
       },
-      requests: {
-        cpu: "250m",
-        memory: "256Mi"
+      kestra: {
+        secrets: "",
+        ee: {
+          license: {
+            id: "",
+            key: "",
+            fingerprint: ""
+          }
+        }
       }
     },
-    ingress: {
-      enabled: false,
-      className: "nginx",
-      host: "example.com",
-      tls: false
+    webserver: {
+      enabled: true
     },
-    service: {
-      type: "ClusterIP",
-      port: 80
+    executor: {
+      enabled: false
     },
-    persistence: {
-      enabled: false,
-      size: "1Gi",
-      storageClass: "standard"
+    worker: {
+      enabled: false
     },
-    env: []
+    scheduler: {
+      enabled: false
+    },
+    standalone: {
+      enabled: false
+    }
   });
 
   const [showPreview, setShowPreview] = useState(true);
@@ -155,11 +172,10 @@ const Index = () => {
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Configuration Form */}
           <div className="space-y-6">
-            <ResourceConfig values={values} onUpdate={updateValues} />
-            <ServiceConfig values={values} onUpdate={updateValues} />
-            <IngressConfig values={values} onUpdate={updateValues} />
-            <StorageConfig values={values} onUpdate={updateValues} />
-            <EnvConfig values={values} onUpdate={updateValues} />
+            <InstanceConfig values={values} onUpdate={updateValues} />
+            <DatabaseConfig values={values} onUpdate={updateValues} />
+            <KestraConfig values={values} onUpdate={updateValues} />
+            <DeploymentConfig values={values} onUpdate={updateValues} />
           </div>
 
           {/* YAML Preview */}
