@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, Settings, Key, Shield } from "lucide-react";
 import { useState } from "react";
@@ -38,16 +39,44 @@ export const KestraConfig = ({ values, onUpdate }: KestraConfigProps) => {
                 <Key className="w-4 h-4 text-primary" />
                 <h4 className="text-sm font-medium text-foreground">Secrets Configuration</h4>
               </div>
+              
               <div className="space-y-2">
-                <Label htmlFor="secrets-config">Secrets Configuration</Label>
-                <Textarea
-                  id="secrets-config"
-                  value={values.configuration?.kestra?.secrets || ""}
-                  onChange={(e) => onUpdate('configuration.kestra.secrets', e.target.value)}
-                  placeholder="Configure secrets management..."
-                  rows={4}
-                />
+                <Label htmlFor="secrets-type">Secret Manager Type</Label>
+                <Select
+                  value={values.configuration?.kestra?.secrets?.type || ""}
+                  onValueChange={(value) => onUpdate('configuration.kestra.secrets.type', value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select secret manager type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="jdbc">JDBC</SelectItem>
+                    <SelectItem value="elasticsearch">Elasticsearch</SelectItem>
+                    <SelectItem value="azure">Azure</SelectItem>
+                    <SelectItem value="aws">AWS</SelectItem>
+                    <SelectItem value="google">Google</SelectItem>
+                    <SelectItem value="vault">Vault</SelectItem>
+                    <SelectItem value="cyberark">CyberArk</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
+
+              {values.configuration?.kestra?.secrets?.type && (
+                <div className="space-y-2">
+                  <Label htmlFor="secrets-config">
+                    {values.configuration.kestra.secrets.type.charAt(0).toUpperCase() + 
+                     values.configuration.kestra.secrets.type.slice(1)} Configuration
+                  </Label>
+                  <Textarea
+                    id="secrets-config"
+                    value={values.configuration?.kestra?.secrets?.[values.configuration.kestra.secrets.type] || ""}
+                    onChange={(e) => onUpdate(`configuration.kestra.secrets.${values.configuration.kestra.secrets.type}`, e.target.value)}
+                    placeholder={`Configure ${values.configuration.kestra.secrets.type} settings (YAML format)...`}
+                    rows={6}
+                    className="font-mono text-sm"
+                  />
+                </div>
+              )}
             </div>
 
             {/* Enterprise Edition Configuration */}

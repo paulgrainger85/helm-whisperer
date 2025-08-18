@@ -27,7 +27,16 @@ interface KestraHelmValues {
       options: string;
     };
     kestra: {
-      secrets: string;
+      secrets: {
+        type: string;
+        jdbc?: string;
+        elasticsearch?: string;
+        azure?: string;
+        aws?: string;
+        google?: string;
+        vault?: string;
+        cyberark?: string;
+      };
       ee: {
         license: {
           id: string;
@@ -73,7 +82,16 @@ const Index = () => {
         options: ""
       },
       kestra: {
-        secrets: "",
+        secrets: {
+          type: "",
+          jdbc: "",
+          elasticsearch: "",
+          azure: "",
+          aws: "",
+          google: "",
+          vault: "",
+          cyberark: ""
+        },
         ee: {
           license: {
             id: "",
