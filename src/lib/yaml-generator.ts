@@ -52,6 +52,28 @@ export const generateYaml = (values: any): string => {
         return;
       }
       
+      // Special handling for postgres datasource - include options verbatim
+      if (key === 'postgres' && typeof value === 'object' && (value as any).options) {
+        const postgresValue = value as any;
+        addLine(`${displayKey}:`, indent);
+        
+        // Add other postgres fields first
+        Object.entries(postgresValue).forEach(([pgKey, pgValue]) => {
+          if (pgKey !== 'options' && pgValue !== null && pgValue !== undefined && pgValue !== '') {
+            addLine(`${pgKey}: ${formatValue(pgValue)}`, indent + 1);
+          }
+        });
+        
+        // Add options content verbatim
+        if (postgresValue.options && postgresValue.options.trim()) {
+          const optionsLines = postgresValue.options.split('\n').filter((line: string) => line.trim());
+          optionsLines.forEach((line: string) => {
+            addLine(line.trim(), indent + 1);
+          });
+        }
+        return;
+      }
+      
       // Special handling for imagePullSecrets - format as array
       if (key === 'imagePullSecrets' && typeof value === 'object' && (value as any).name) {
         const pullSecretValue = value as any;
