@@ -49,6 +49,16 @@ export const generateYaml = (values: any): string => {
         return;
       }
       
+      // Special handling for imagePullSecrets - format as array
+      if (key === 'imagePullSecrets' && typeof value === 'object' && (value as any).name) {
+        const pullSecretValue = value as any;
+        if (pullSecretValue.name) {
+          addLine(`${key}:`, indent);
+          addLine(`- name: ${formatValue(pullSecretValue.name)}`, indent + 1);
+        }
+        return;
+      }
+      
       if (typeof value === 'object' && !Array.isArray(value)) {
         addLine(`${key}:`, indent);
         processObject(value, indent + 1);
