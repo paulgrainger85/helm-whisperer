@@ -65,20 +65,28 @@ interface KestraHelmValues {
       };
     };
   };
-  webserver: {
-    enabled: boolean;
-  };
-  executor: {
-    enabled: boolean;
-  };
-  worker: {
-    enabled: boolean;
-  };
-  scheduler: {
-    enabled: boolean;
-  };
-  standalone: {
-    enabled: boolean;
+  deployments: {
+    webserver: {
+      enabled: boolean;
+    };
+    executor: {
+      enabled: boolean;
+    };
+    worker: {
+      enabled: boolean;
+    };
+    scheduler: {
+      enabled: boolean;
+    };
+    standalone: {
+      enabled: boolean;
+    };
+    postgres: {
+      enabled: boolean;
+    };
+    minio: {
+      enabled: boolean;
+    };
   };
 }
 
@@ -139,20 +147,28 @@ const Index = () => {
         }
       }
     },
-    webserver: {
-      enabled: true
-    },
-    executor: {
-      enabled: false
-    },
-    worker: {
-      enabled: false
-    },
-    scheduler: {
-      enabled: false
-    },
-    standalone: {
-      enabled: false
+    deployments: {
+      webserver: {
+        enabled: true
+      },
+      executor: {
+        enabled: false
+      },
+      worker: {
+        enabled: false
+      },
+      scheduler: {
+        enabled: false
+      },
+      standalone: {
+        enabled: false
+      },
+      postgres: {
+        enabled: false
+      },
+      minio: {
+        enabled: false
+      }
     }
   });
 

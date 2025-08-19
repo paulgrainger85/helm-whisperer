@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, Layers, Server, Cpu, Calendar, Play, Monitor } from "lucide-react";
+import { ChevronDown, Layers, Server, Cpu, Calendar, Play, Monitor, Database, HardDrive } from "lucide-react";
 import { useState } from "react";
 
 interface DeploymentConfigProps {
@@ -43,6 +43,18 @@ export const DeploymentConfig = ({ values, onUpdate }: DeploymentConfigProps) =>
       name: 'Standalone', 
       description: 'All-in-one deployment',
       icon: Server 
+    },
+    { 
+      key: 'postgres', 
+      name: 'PostgreSQL', 
+      description: 'Database deployment',
+      icon: Database 
+    },
+    { 
+      key: 'minio', 
+      name: 'MinIO', 
+      description: 'Object storage deployment',
+      icon: HardDrive 
     }
   ];
 
@@ -78,8 +90,8 @@ export const DeploymentConfig = ({ values, onUpdate }: DeploymentConfigProps) =>
                     </div>
                   </div>
                   <Switch
-                    checked={values[deployment.key]?.enabled || false}
-                    onCheckedChange={(checked) => onUpdate(`${deployment.key}.enabled`, checked)}
+                    checked={values.deployments?.[deployment.key]?.enabled || false}
+                    onCheckedChange={(checked) => onUpdate(`deployments.${deployment.key}.enabled`, checked)}
                   />
                 </div>
               );
