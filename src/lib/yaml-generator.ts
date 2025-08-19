@@ -62,7 +62,25 @@ export const generateYaml = (values: any): string => {
         return;
       }
       
-      // Special handling for micronaut oauth2 clients
+      // Special handling for micronaut oauth2 - only include if configured
+      if (key === 'micronaut' && typeof value === 'object' && (value as any).security?.oauth2?.clients) {
+        const clientsValue = (value as any).security.oauth2.clients;
+        if (clientsValue.providerName && clientsValue.clientId && clientsValue.clientSecret && clientsValue.issuer) {
+          addLine(`${displayKey}:`, indent);
+          addLine(`security:`, indent + 1);
+          addLine(`oauth2:`, indent + 2);
+          addLine(`enabled: true`, indent + 3);
+          addLine(`clients:`, indent + 3);
+          addLine(`${clientsValue.providerName}:`, indent + 4);
+          addLine(`client-id: ${formatValue(clientsValue.clientId)}`, indent + 5);
+          addLine(`client-secret: ${formatValue(clientsValue.clientSecret)}`, indent + 5);
+          addLine(`openid:`, indent + 5);
+          addLine(`issuer: ${formatValue(clientsValue.issuer)}`, indent + 6);
+        }
+        return;
+      }
+      
+      // Special handling for micronaut oauth2 clients (fallback - should not be reached)
       if (key === 'clients' && typeof value === 'object' && (value as any).providerName) {
         const clientsValue = value as any;
         if (clientsValue.providerName && clientsValue.clientId && clientsValue.clientSecret && clientsValue.issuer) {
