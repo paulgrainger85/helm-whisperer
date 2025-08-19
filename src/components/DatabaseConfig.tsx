@@ -1,17 +1,19 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, Database } from "lucide-react";
+import { ChevronDown, Database, RotateCcw } from "lucide-react";
 import { useState } from "react";
 
 interface DatabaseConfigProps {
   values: any;
   onUpdate: (path: string, value: any) => void;
+  onReset: () => void;
 }
 
-export const DatabaseConfig = ({ values, onUpdate }: DatabaseConfigProps) => {
+export const DatabaseConfig = ({ values, onUpdate, onReset }: DatabaseConfigProps) => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -26,7 +28,17 @@ export const DatabaseConfig = ({ values, onUpdate }: DatabaseConfigProps) => {
                 <CardDescription>Configure datasource connection settings</CardDescription>
               </div>
             </div>
-            <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+            <div className="flex items-center space-x-2">
+              <Button
+                onClick={onReset}
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <RotateCcw className="w-4 h-4" />
+              </Button>
+              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+            </div>
           </CollapsibleTrigger>
         </CardHeader>
         

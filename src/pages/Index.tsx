@@ -107,7 +107,8 @@ interface KestraHelmValues {
 
 const Index = () => {
   const { toast } = useToast();
-  const [values, setValues] = useState<KestraHelmValues>({
+  // Define default values for each section
+  const getDefaultValues = () => ({
     image: {
       repository: "registry.kestra.io/docker/kestra-ee",
       tag: "latest",
@@ -200,6 +201,68 @@ const Index = () => {
     }
   });
 
+  const [values, setValues] = useState<KestraHelmValues>(getDefaultValues());
+
+  // Reset functions for each section
+  const resetInstanceConfig = () => {
+    const defaultValues = getDefaultValues();
+    setValues(prev => ({
+      ...prev,
+      image: defaultValues.image,
+      imagePullSecrets: defaultValues.imagePullSecrets
+    }));
+  };
+
+  const resetDatabaseConfig = () => {
+    const defaultValues = getDefaultValues();
+    setValues(prev => ({
+      ...prev,
+      configuration: {
+        ...prev.configuration,
+        datasources: defaultValues.configuration.datasources
+      }
+    }));
+  };
+
+  const resetKestraConfig = () => {
+    const defaultValues = getDefaultValues();
+    setValues(prev => ({
+      ...prev,
+      configuration: {
+        ...prev.configuration,
+        kestra: defaultValues.configuration.kestra
+      }
+    }));
+  };
+
+  const resetSSOConfig = () => {
+    const defaultValues = getDefaultValues();
+    setValues(prev => ({
+      ...prev,
+      configuration: {
+        ...prev.configuration,
+        micronaut: defaultValues.configuration.micronaut
+      }
+    }));
+  };
+
+  const resetDeploymentConfig = () => {
+    const defaultValues = getDefaultValues();
+    setValues(prev => ({
+      ...prev,
+      deployments: defaultValues.deployments
+    }));
+  };
+
+  const resetDevelopmentConfig = () => {
+    const defaultValues = getDefaultValues();
+    setValues(prev => ({
+      ...prev,
+      postgresql: defaultValues.postgresql,
+      minio: defaultValues.minio
+    }));
+  };
+
   const [showPreview, setShowPreview] = useState(true);
 
   const updateValues = (path: string, value: any) => {
@@ -272,12 +335,12 @@ const Index = () => {
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Configuration Form */}
           <div className="space-y-6">
-            <InstanceConfig values={values} onUpdate={updateValues} />
-            <DatabaseConfig values={values} onUpdate={updateValues} />
-            <KestraConfig values={values} onUpdate={updateValues} />
-            <SSOConfig values={values} onUpdate={updateValues} />
-            <DeploymentConfig values={values} onUpdate={updateValues} />
-            <DevelopmentConfig values={values} onUpdate={updateValues} />
+            <InstanceConfig values={values} onUpdate={updateValues} onReset={resetInstanceConfig} />
+            <DatabaseConfig values={values} onUpdate={updateValues} onReset={resetDatabaseConfig} />
+            <KestraConfig values={values} onUpdate={updateValues} onReset={resetKestraConfig} />
+            <SSOConfig values={values} onUpdate={updateValues} onReset={resetSSOConfig} />
+            <DeploymentConfig values={values} onUpdate={updateValues} onReset={resetDeploymentConfig} />
+            <DevelopmentConfig values={values} onUpdate={updateValues} onReset={resetDevelopmentConfig} />
           </div>
 
           {/* YAML Preview */}

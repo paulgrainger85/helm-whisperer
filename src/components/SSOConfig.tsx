@@ -1,16 +1,18 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, Shield } from "lucide-react";
+import { ChevronDown, Shield, RotateCcw } from "lucide-react";
 import { useState } from "react";
 
 interface SSOConfigProps {
   values: any;
   onUpdate: (path: string, value: any) => void;
+  onReset: () => void;
 }
 
-export const SSOConfig = ({ values, onUpdate }: SSOConfigProps) => {
+export const SSOConfig = ({ values, onUpdate, onReset }: SSOConfigProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -25,7 +27,17 @@ export const SSOConfig = ({ values, onUpdate }: SSOConfigProps) => {
                 <CardDescription>Configure OAuth2/OIDC authentication</CardDescription>
               </div>
             </div>
-            <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+            <div className="flex items-center space-x-2">
+              <Button
+                onClick={onReset}
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <RotateCcw className="w-4 h-4" />
+              </Button>
+              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+            </div>
           </CollapsibleTrigger>
         </CardHeader>
         

@@ -1,16 +1,18 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, Layers, Server, Cpu, Calendar, Play, Monitor, Database, HardDrive } from "lucide-react";
+import { ChevronDown, Layers, Server, Cpu, Calendar, Play, Monitor, RotateCcw } from "lucide-react";
 import { useState } from "react";
 
 interface DeploymentConfigProps {
   values: any;
   onUpdate: (path: string, value: any) => void;
+  onReset: () => void;
 }
 
-export const DeploymentConfig = ({ values, onUpdate }: DeploymentConfigProps) => {
+export const DeploymentConfig = ({ values, onUpdate, onReset }: DeploymentConfigProps) => {
   const [isOpen, setIsOpen] = useState(true);
 
   const deployments = [
@@ -58,7 +60,17 @@ export const DeploymentConfig = ({ values, onUpdate }: DeploymentConfigProps) =>
                 <CardDescription>Enable/disable individual Kestra services</CardDescription>
               </div>
             </div>
-            <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+            <div className="flex items-center space-x-2">
+              <Button
+                onClick={onReset}
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <RotateCcw className="w-4 h-4" />
+              </Button>
+              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+            </div>
           </CollapsibleTrigger>
         </CardHeader>
         

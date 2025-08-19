@@ -12,7 +12,7 @@ export const generateYaml = (values: any): string => {
       }
       
       // Handle special case for minio key capitalization
-      const displayKey = key === 'minio' ? 'Minio' : key;
+      const displayKey = key === 'minio' ? 'minio' : key;
       
       // Special handling for secrets configuration
       if (key === 'secrets' && typeof value === 'object' && (value as any).type) {
@@ -88,7 +88,7 @@ export const generateYaml = (values: any): string => {
             if (typeof item === 'object') {
               addLine('- ', indent + 1);
               Object.entries(item).forEach(([k, v]) => {
-                const itemDisplayKey = k === 'minio' ? 'Minio' : k;
+                const itemDisplayKey = k === 'minio' ? 'minio' : k;
                 addLine(`${itemDisplayKey}: ${formatValue(v)}`, indent + 2);
               });
             } else {

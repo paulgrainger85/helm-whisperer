@@ -1,17 +1,19 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, Container } from "lucide-react";
+import { ChevronDown, Container, RotateCcw } from "lucide-react";
 import { useState } from "react";
 
 interface InstanceConfigProps {
   values: any;
   onUpdate: (path: string, value: any) => void;
+  onReset: () => void;
 }
 
-export const InstanceConfig = ({ values, onUpdate }: InstanceConfigProps) => {
+export const InstanceConfig = ({ values, onUpdate, onReset }: InstanceConfigProps) => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -26,7 +28,17 @@ export const InstanceConfig = ({ values, onUpdate }: InstanceConfigProps) => {
                 <CardDescription>Configure container image and pull secrets</CardDescription>
               </div>
             </div>
-            <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+            <div className="flex items-center space-x-2">
+              <Button
+                onClick={onReset}
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <RotateCcw className="w-4 h-4" />
+              </Button>
+              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+            </div>
           </CollapsibleTrigger>
         </CardHeader>
         

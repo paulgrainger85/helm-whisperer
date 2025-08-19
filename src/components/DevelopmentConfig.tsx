@@ -1,16 +1,18 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, Wrench, Database, HardDrive } from "lucide-react";
+import { ChevronDown, Wrench, Database, HardDrive, RotateCcw } from "lucide-react";
 import { useState } from "react";
 
 interface DevelopmentConfigProps {
   values: any;
   onUpdate: (path: string, value: any) => void;
+  onReset: () => void;
 }
 
-export const DevelopmentConfig = ({ values, onUpdate }: DevelopmentConfigProps) => {
+export const DevelopmentConfig = ({ values, onUpdate, onReset }: DevelopmentConfigProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const developmentServices = [
@@ -40,7 +42,17 @@ export const DevelopmentConfig = ({ values, onUpdate }: DevelopmentConfigProps) 
                 <CardDescription>Enable development services for local testing</CardDescription>
               </div>
             </div>
-            <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+            <div className="flex items-center space-x-2">
+              <Button
+                onClick={onReset}
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <RotateCcw className="w-4 h-4" />
+              </Button>
+              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+            </div>
           </CollapsibleTrigger>
         </CardHeader>
         
