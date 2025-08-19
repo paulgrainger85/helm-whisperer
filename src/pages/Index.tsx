@@ -6,6 +6,9 @@ import { InstanceConfig } from "@/components/InstanceConfig";
 import { DatabaseConfig } from "@/components/DatabaseConfig";
 import { KestraConfig } from "@/components/KestraConfig";
 import { DeploymentConfig } from "@/components/DeploymentConfig";
+import { SSOConfig } from "@/components/SSOConfig";
+import { PostgreSQLConfig } from "@/components/PostgreSQLConfig";
+import { MinIOConfig } from "@/components/MinIOConfig";
 import { YamlPreview } from "@/components/YamlPreview";
 import { generateYaml } from "@/lib/yaml-generator";
 import { useToast } from "@/hooks/use-toast";
@@ -29,41 +32,54 @@ interface KestraHelmValues {
         options: string;
       };
     };
-    kestra: {
-      secrets: {
-        type: string;
-        jdbc?: string;
-        elasticsearch?: string;
-        azure?: string;
-        aws?: string;
-        google?: string;
-        vault?: string;
-        cyberark?: string;
-      };
-      storage: {
-        type: string;
-        s3?: string;
-        gcs?: string;
-        azure?: string;
-        minio?: string;
-      };
-      encryption: {
-        'secret-key': string;
-      };
-      queue: {
-        type: string;
-      };
-      repository: {
-        type: string;
-      };
-      ee: {
-        license: {
-          id: string;
-          key: string;
-          fingerprint: string;
+      kestra: {
+        secrets: {
+          type: string;
+          jdbc?: string;
+          elasticsearch?: string;
+          azure?: string;
+          aws?: string;
+          google?: string;
+          vault?: string;
+          cyberark?: string;
+        };
+        storage: {
+          type: string;
+          s3?: string;
+          gcs?: string;
+          azure?: string;
+          minio?: string;
+        };
+        encryption: {
+          'secret-key': string;
+        };
+        queue: {
+          type: string;
+        };
+        repository: {
+          type: string;
+        };
+        ee: {
+          license: {
+            id: string;
+            key: string;
+            fingerprint: string;
+          };
         };
       };
-    };
+      micronaut?: {
+        security?: {
+          oauth2?: {
+            enabled?: boolean;
+            clients?: {
+              providerName?: string;
+              clientId?: string;
+              clientSecret?: string;
+              issuer?: string;
+            };
+          };
+        };
+      };
   };
   deployments: {
     webserver: {
@@ -81,12 +97,12 @@ interface KestraHelmValues {
     standalone: {
       enabled: boolean;
     };
-    postgres: {
-      enabled: boolean;
-    };
-    minio: {
-      enabled: boolean;
-    };
+  };
+  postgresql: {
+    enabled: boolean;
+  };
+  minio: {
+    enabled: boolean;
   };
 }
 
@@ -162,13 +178,13 @@ const Index = () => {
       },
       standalone: {
         enabled: false
-      },
-      postgres: {
-        enabled: false
-      },
-      minio: {
-        enabled: false
       }
+    },
+    postgresql: {
+      enabled: false
+    },
+    minio: {
+      enabled: false
     }
   });
 
@@ -247,7 +263,10 @@ const Index = () => {
             <InstanceConfig values={values} onUpdate={updateValues} />
             <DatabaseConfig values={values} onUpdate={updateValues} />
             <KestraConfig values={values} onUpdate={updateValues} />
+            <SSOConfig values={values} onUpdate={updateValues} />
             <DeploymentConfig values={values} onUpdate={updateValues} />
+            <PostgreSQLConfig values={values} onUpdate={updateValues} />
+            <MinIOConfig values={values} onUpdate={updateValues} />
           </div>
 
           {/* YAML Preview */}

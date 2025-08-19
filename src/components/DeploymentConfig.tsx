@@ -43,18 +43,6 @@ export const DeploymentConfig = ({ values, onUpdate }: DeploymentConfigProps) =>
       name: 'Standalone', 
       description: 'All-in-one deployment',
       icon: Server 
-    },
-    { 
-      key: 'postgres', 
-      name: 'PostgreSQL', 
-      description: 'Database deployment',
-      icon: Database 
-    },
-    { 
-      key: 'minio', 
-      name: 'MinIO', 
-      description: 'Object storage deployment',
-      icon: HardDrive 
     }
   ];
 

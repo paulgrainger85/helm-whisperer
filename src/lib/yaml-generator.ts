@@ -11,10 +11,13 @@ export const generateYaml = (values: any): string => {
         return;
       }
       
+      // Handle special case for minio key capitalization
+      const displayKey = key === 'minio' ? 'Minio' : key;
+      
       // Special handling for secrets configuration
       if (key === 'secrets' && typeof value === 'object' && (value as any).type) {
         const secretsValue = value as any;
-        addLine(`${key}:`, indent);
+        addLine(`${displayKey}:`, indent);
         addLine(`type: ${formatValue(secretsValue.type)}`, indent + 1);
         
         // Add the specific secret manager configuration if it exists
@@ -33,7 +36,7 @@ export const generateYaml = (values: any): string => {
       // Special handling for storage configuration
       if (key === 'storage' && typeof value === 'object' && (value as any).type) {
         const storageValue = value as any;
-        addLine(`${key}:`, indent);
+        addLine(`${displayKey}:`, indent);
         addLine(`type: ${formatValue(storageValue.type)}`, indent + 1);
         
         // Add the specific storage configuration if it exists
@@ -53,25 +56,40 @@ export const generateYaml = (values: any): string => {
       if (key === 'imagePullSecrets' && typeof value === 'object' && (value as any).name) {
         const pullSecretValue = value as any;
         if (pullSecretValue.name) {
-          addLine(`${key}:`, indent);
+          addLine(`${displayKey}:`, indent);
           addLine(`- name: ${formatValue(pullSecretValue.name)}`, indent + 1);
         }
         return;
       }
       
+      // Special handling for micronaut oauth2 clients
+      if (key === 'clients' && typeof value === 'object' && (value as any).providerName) {
+        const clientsValue = value as any;
+        if (clientsValue.providerName && clientsValue.clientId && clientsValue.clientSecret && clientsValue.issuer) {
+          addLine(`${displayKey}:`, indent);
+          addLine(`${clientsValue.providerName}:`, indent + 1);
+          addLine(`client-id: ${formatValue(clientsValue.clientId)}`, indent + 2);
+          addLine(`client-secret: ${formatValue(clientsValue.clientSecret)}`, indent + 2);
+          addLine(`openid:`, indent + 2);
+          addLine(`issuer: ${formatValue(clientsValue.issuer)}`, indent + 3);
+        }
+        return;
+      }
+      
       if (typeof value === 'object' && !Array.isArray(value)) {
-        addLine(`${key}:`, indent);
+        addLine(`${displayKey}:`, indent);
         processObject(value, indent + 1);
       } else if (Array.isArray(value)) {
         if (value.length === 0) {
-          addLine(`${key}: []`, indent);
+          addLine(`${displayKey}: []`, indent);
         } else {
-          addLine(`${key}:`, indent);
+          addLine(`${displayKey}:`, indent);
           value.forEach(item => {
             if (typeof item === 'object') {
               addLine('- ', indent + 1);
               Object.entries(item).forEach(([k, v]) => {
-                addLine(`${k}: ${formatValue(v)}`, indent + 2);
+                const itemDisplayKey = k === 'minio' ? 'Minio' : k;
+                addLine(`${itemDisplayKey}: ${formatValue(v)}`, indent + 2);
               });
             } else {
               addLine(`- ${formatValue(item)}`, indent + 1);
@@ -79,7 +97,7 @@ export const generateYaml = (values: any): string => {
           });
         }
       } else {
-        addLine(`${key}: ${formatValue(value)}`, indent);
+        addLine(`${displayKey}: ${formatValue(value)}`, indent);
       }
     });
   };
