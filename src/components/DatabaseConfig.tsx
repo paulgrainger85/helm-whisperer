@@ -45,11 +45,11 @@ export const DatabaseConfig = ({ values, onUpdate, onReset }: DatabaseConfigProp
         <CollapsibleContent>
           <CardContent className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="db-uri">Database URI</Label>
+              <Label htmlFor="db-url">Database URL</Label>
               <Input
-                id="db-uri"
-                value={values.configuration?.datasources?.postgres?.uri || ""}
-                onChange={(e) => onUpdate('configuration.datasources.postgres.uri', e.target.value)}
+                id="db-url"
+                value={values.configuration?.datasources?.postgres?.url || ""}
+                onChange={(e) => onUpdate('configuration.datasources.postgres.url', e.target.value)}
                 placeholder="jdbc:postgresql://localhost:5432/kestra"
               />
             </div>
