@@ -160,6 +160,19 @@ const Index = () => {
             fingerprint: ""
           }
         }
+      },
+      micronaut: {
+        security: {
+          oauth2: {
+            enabled: true,
+            clients: {
+              providerName: "",
+              clientId: "",
+              clientSecret: "",
+              issuer: ""
+            }
+          }
+        }
       }
     },
     deployments: {
