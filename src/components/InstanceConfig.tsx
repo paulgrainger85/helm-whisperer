@@ -22,7 +22,7 @@ export const InstanceConfig = ({ values, onUpdate }: InstanceConfigProps) => {
             <div className="flex items-center space-x-2">
               <Container className="w-5 h-5 text-primary" />
               <div>
-                <CardTitle>Instance Level Settings</CardTitle>
+                <CardTitle>Docker Configuration</CardTitle>
                 <CardDescription>Configure container image and pull secrets</CardDescription>
               </div>
             </div>
@@ -37,9 +37,9 @@ export const InstanceConfig = ({ values, onUpdate }: InstanceConfigProps) => {
                 <Label htmlFor="repository">Image Repository</Label>
                 <Input
                   id="repository"
-                  value={values.image?.repository || "kestra/kestra"}
+                  value={values.image?.repository || "registry.kestra.io/docker/kestra-ee"}
                   onChange={(e) => onUpdate('image.repository', e.target.value)}
-                  placeholder="kestra/kestra"
+                  placeholder="registry.kestra.io/docker/kestra-ee"
                 />
               </div>
               <div className="space-y-2">

@@ -35,8 +35,16 @@ export const YamlPreview = ({ values }: YamlPreviewProps) => {
           <div className="flex items-center space-x-2">
             <FileText className="w-5 h-5 text-primary" />
             <div>
-              <CardTitle>Generated YAML</CardTitle>
-              <CardDescription>Live preview of your Helm values</CardDescription>
+              <CardTitle>Generated values.yaml</CardTitle>
+              <CardDescription>
+                Live preview of your Helm values
+                <div className="mt-3 p-4 bg-muted/50 rounded-lg border border-border">
+                  <p className="text-sm font-medium mb-2">Deploy with Helm:</p>
+                  <code className="text-xs bg-background px-2 py-1 rounded border">
+                    helm install kestra kestra/kestra -f values.yaml
+                  </code>
+                </div>
+              </CardDescription>
             </div>
           </div>
           <Button onClick={copyToClipboard} variant="secondary" size="sm">

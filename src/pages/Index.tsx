@@ -7,8 +7,7 @@ import { DatabaseConfig } from "@/components/DatabaseConfig";
 import { KestraConfig } from "@/components/KestraConfig";
 import { DeploymentConfig } from "@/components/DeploymentConfig";
 import { SSOConfig } from "@/components/SSOConfig";
-import { PostgreSQLConfig } from "@/components/PostgreSQLConfig";
-import { MinIOConfig } from "@/components/MinIOConfig";
+import { DevelopmentConfig } from "@/components/DevelopmentConfig";
 import { YamlPreview } from "@/components/YamlPreview";
 import { generateYaml } from "@/lib/yaml-generator";
 import { useToast } from "@/hooks/use-toast";
@@ -110,7 +109,7 @@ const Index = () => {
   const { toast } = useToast();
   const [values, setValues] = useState<KestraHelmValues>({
     image: {
-      repository: "kestra/kestra",
+      repository: "registry.kestra.io/docker/kestra-ee",
       tag: "latest",
       pullPolicy: "IfNotPresent"
     },
@@ -265,8 +264,7 @@ const Index = () => {
             <KestraConfig values={values} onUpdate={updateValues} />
             <SSOConfig values={values} onUpdate={updateValues} />
             <DeploymentConfig values={values} onUpdate={updateValues} />
-            <PostgreSQLConfig values={values} onUpdate={updateValues} />
-            <MinIOConfig values={values} onUpdate={updateValues} />
+            <DevelopmentConfig values={values} onUpdate={updateValues} />
           </div>
 
           {/* YAML Preview */}
