@@ -23,11 +23,11 @@ interface KestraHelmValues {
     datasources: {
       postgres: {
         driverClassName: string;
+        uri: string;
+        username: string;
+        password: string;
+        options: string;
       };
-      uri: string;
-      username: string;
-      password: string;
-      options: string;
     };
     kestra: {
       secrets: {
@@ -96,12 +96,12 @@ const Index = () => {
     configuration: {
       datasources: {
         postgres: {
-          driverClassName: "org.postgresql.Driver"
-        },
-        uri: "",
-        username: "",
-        password: "",
-        options: ""
+          driverClassName: "org.postgresql.Driver",
+          uri: "",
+          username: "",
+          password: "",
+          options: ""
+        }
       },
       kestra: {
         secrets: {

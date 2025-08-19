@@ -36,8 +36,8 @@ export const DatabaseConfig = ({ values, onUpdate }: DatabaseConfigProps) => {
               <Label htmlFor="db-uri">Database URI</Label>
               <Input
                 id="db-uri"
-                value={values.configuration?.datasources?.uri || ""}
-                onChange={(e) => onUpdate('configuration.datasources.uri', e.target.value)}
+                value={values.configuration?.datasources?.postgres?.uri || ""}
+                onChange={(e) => onUpdate('configuration.datasources.postgres.uri', e.target.value)}
                 placeholder="jdbc:postgresql://localhost:5432/kestra"
               />
             </div>
@@ -47,8 +47,8 @@ export const DatabaseConfig = ({ values, onUpdate }: DatabaseConfigProps) => {
                 <Label htmlFor="db-username">Username</Label>
                 <Input
                   id="db-username"
-                  value={values.configuration?.datasources?.username || ""}
-                  onChange={(e) => onUpdate('configuration.datasources.username', e.target.value)}
+                  value={values.configuration?.datasources?.postgres?.username || ""}
+                  onChange={(e) => onUpdate('configuration.datasources.postgres.username', e.target.value)}
                   placeholder="kestra"
                 />
               </div>
@@ -57,8 +57,8 @@ export const DatabaseConfig = ({ values, onUpdate }: DatabaseConfigProps) => {
                 <Input
                   id="db-password"
                   type="password"
-                  value={values.configuration?.datasources?.password || ""}
-                  onChange={(e) => onUpdate('configuration.datasources.password', e.target.value)}
+                  value={values.configuration?.datasources?.postgres?.password || ""}
+                  onChange={(e) => onUpdate('configuration.datasources.postgres.password', e.target.value)}
                   placeholder="password"
                 />
               </div>
@@ -68,8 +68,8 @@ export const DatabaseConfig = ({ values, onUpdate }: DatabaseConfigProps) => {
               <Label htmlFor="db-options">Additional Options</Label>
               <Textarea
                 id="db-options"
-                value={values.configuration?.datasources?.options || ""}
-                onChange={(e) => onUpdate('configuration.datasources.options', e.target.value)}
+                value={values.configuration?.datasources?.postgres?.options || ""}
+                onChange={(e) => onUpdate('configuration.datasources.postgres.options', e.target.value)}
                 placeholder="Additional database connection options..."
                 rows={3}
               />
