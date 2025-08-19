@@ -11,6 +11,25 @@ export const generateYaml = (values: any): string => {
         return;
       }
       
+      // Special handling for secrets configuration
+      if (key === 'secrets' && typeof value === 'object' && (value as any).type) {
+        const secretsValue = value as any;
+        addLine(`${key}:`, indent);
+        addLine(`type: ${formatValue(secretsValue.type)}`, indent + 1);
+        
+        // Add the specific secret manager configuration if it exists
+        const secretConfig = secretsValue[secretsValue.type];
+        if (secretConfig && secretConfig.trim()) {
+          addLine(`${secretsValue.type}:`, indent + 1);
+          // Parse the YAML-like config and add with proper indentation
+          const configLines = secretConfig.split('\n').filter((line: string) => line.trim());
+          configLines.forEach((line: string) => {
+            addLine(line.trim(), indent + 2);
+          });
+        }
+        return;
+      }
+      
       if (typeof value === 'object' && !Array.isArray(value)) {
         addLine(`${key}:`, indent);
         processObject(value, indent + 1);
