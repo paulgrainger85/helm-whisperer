@@ -21,6 +21,9 @@ interface KestraHelmValues {
   };
   configuration: {
     datasources: {
+      postgres: {
+        driverClassName: string;
+      };
       uri: string;
       username: string;
       password: string;
@@ -36,6 +39,22 @@ interface KestraHelmValues {
         google?: string;
         vault?: string;
         cyberark?: string;
+      };
+      storage: {
+        type: string;
+        s3?: string;
+        gcs?: string;
+        azure?: string;
+        minio?: string;
+      };
+      encryption: {
+        'secret-key': string;
+      };
+      queue: {
+        type: string;
+      };
+      repository: {
+        type: string;
       };
       ee: {
         license: {
@@ -76,6 +95,9 @@ const Index = () => {
     },
     configuration: {
       datasources: {
+        postgres: {
+          driverClassName: "org.postgresql.Driver"
+        },
         uri: "",
         username: "",
         password: "",
@@ -91,6 +113,22 @@ const Index = () => {
           google: "",
           vault: "",
           cyberark: ""
+        },
+        storage: {
+          type: "",
+          s3: "",
+          gcs: "",
+          azure: "",
+          minio: ""
+        },
+        encryption: {
+          'secret-key': ""
+        },
+        queue: {
+          type: "postgres"
+        },
+        repository: {
+          type: "postgres"
         },
         ee: {
           license: {

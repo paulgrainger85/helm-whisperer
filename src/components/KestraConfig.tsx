@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, Settings, Key, Shield } from "lucide-react";
+import { ChevronDown, Settings, Key, Shield, Database, Lock } from "lucide-react";
 import { useState } from "react";
 
 interface KestraConfigProps {
@@ -77,6 +77,67 @@ export const KestraConfig = ({ values, onUpdate }: KestraConfigProps) => {
                   />
                 </div>
               )}
+            </div>
+
+            {/* Internal Storage Configuration */}
+            <div className="border-t pt-6 space-y-4">
+              <div className="flex items-center space-x-2 mb-3">
+                <Database className="w-4 h-4 text-primary" />
+                <h4 className="text-sm font-medium text-foreground">Internal Storage</h4>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="storage-type">Storage Type</Label>
+                <Select
+                  value={values.configuration?.kestra?.storage?.type || ""}
+                  onValueChange={(value) => onUpdate('configuration.kestra.storage.type', value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select storage type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="s3">S3</SelectItem>
+                    <SelectItem value="gcs">GCS</SelectItem>
+                    <SelectItem value="azure">Azure</SelectItem>
+                    <SelectItem value="minio">MinIO</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {values.configuration?.kestra?.storage?.type && (
+                <div className="space-y-2">
+                  <Label htmlFor="storage-config">
+                    {values.configuration.kestra.storage.type.toUpperCase()} Configuration
+                  </Label>
+                  <Textarea
+                    id="storage-config"
+                    value={values.configuration?.kestra?.storage?.[values.configuration.kestra.storage.type] || ""}
+                    onChange={(e) => onUpdate(`configuration.kestra.storage.${values.configuration.kestra.storage.type}`, e.target.value)}
+                    placeholder={`Configure ${values.configuration.kestra.storage.type} settings (YAML format)...`}
+                    rows={6}
+                    className="font-mono text-sm"
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Encryption Configuration */}
+            <div className="border-t pt-6 space-y-4">
+              <div className="flex items-center space-x-2 mb-3">
+                <Lock className="w-4 h-4 text-primary" />
+                <h4 className="text-sm font-medium text-foreground">Encryption</h4>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="encryption-key">Secret Key</Label>
+                <Input
+                  id="encryption-key"
+                  value={values.configuration?.kestra?.encryption?.['secret-key'] || ""}
+                  onChange={(e) => onUpdate('configuration.kestra.encryption.secret-key', e.target.value)}
+                  placeholder="Enter encryption secret key"
+                  type="password"
+                />
+              </div>
             </div>
 
             {/* Enterprise Edition Configuration */}

@@ -30,6 +30,25 @@ export const generateYaml = (values: any): string => {
         return;
       }
       
+      // Special handling for storage configuration
+      if (key === 'storage' && typeof value === 'object' && (value as any).type) {
+        const storageValue = value as any;
+        addLine(`${key}:`, indent);
+        addLine(`type: ${formatValue(storageValue.type)}`, indent + 1);
+        
+        // Add the specific storage configuration if it exists
+        const storageConfig = storageValue[storageValue.type];
+        if (storageConfig && storageConfig.trim()) {
+          addLine(`${storageValue.type}:`, indent + 1);
+          // Parse the YAML-like config and add with proper indentation
+          const configLines = storageConfig.split('\n').filter((line: string) => line.trim());
+          configLines.forEach((line: string) => {
+            addLine(line.trim(), indent + 2);
+          });
+        }
+        return;
+      }
+      
       if (typeof value === 'object' && !Array.isArray(value)) {
         addLine(`${key}:`, indent);
         processObject(value, indent + 1);
