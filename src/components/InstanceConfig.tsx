@@ -46,11 +46,11 @@ export const InstanceConfig = ({ values, onUpdate, onReset }: InstanceConfigProp
           <CardContent className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="repository">Image Repository</Label>
+                <Label htmlFor="image">Image</Label>
                 <Input
-                  id="repository"
-                  value={values.image?.repository || "registry.kestra.io/docker/kestra-ee"}
-                  onChange={(e) => onUpdate('image.repository', e.target.value)}
+                  id="image"
+                  value={values.image?.image || "registry.kestra.io/docker/kestra-ee"}
+                  onChange={(e) => onUpdate('image.image', e.target.value)}
                   placeholder="registry.kestra.io/docker/kestra-ee"
                 />
               </div>

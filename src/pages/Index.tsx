@@ -14,7 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 
 interface KestraHelmValues {
   image: {
-    repository: string;
+    image: string;
     tag: string;
     pullPolicy: string;
   };
@@ -110,7 +110,7 @@ const Index = () => {
   // Define default values for each section
   const getDefaultValues = () => ({
     image: {
-      repository: "registry.kestra.io/docker/kestra-ee",
+      image: "registry.kestra.io/docker/kestra-ee",
       tag: "latest",
       pullPolicy: "IfNotPresent"
     },
