@@ -79,7 +79,6 @@ interface KestraHelmValues {
           };
         };
       };
-      oidcEnabled?: boolean;
   };
   deployments: {
     webserver: {
@@ -163,20 +162,6 @@ const Index = () => {
           }
         }
       },
-      micronaut: {
-        security: {
-          oauth2: {
-            enabled: true,
-            clients: {
-              providerName: "",
-              clientId: "",
-              clientSecret: "",
-              issuer: ""
-            }
-          }
-        }
-      },
-      oidcEnabled: false
     },
     deployments: {
       webserver: {
@@ -238,12 +223,11 @@ const Index = () => {
   };
 
   const resetSSOConfig = () => {
-    const defaultValues = getDefaultValues();
     setValues(prev => ({
       ...prev,
       configuration: {
         ...prev.configuration,
-        micronaut: defaultValues.configuration.micronaut
+        micronaut: undefined
       }
     }));
   };

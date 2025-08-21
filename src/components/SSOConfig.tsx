@@ -51,12 +51,30 @@ export const SSOConfig = ({ values, onUpdate, onReset }: SSOConfigProps) => {
               </div>
               <Switch
                 id="oidc-enable"
-                checked={values.configuration?.oidcEnabled || false}
-                onCheckedChange={(checked) => onUpdate("configuration.oidcEnabled", checked)}
+                checked={!!values.configuration?.micronaut}
+                onCheckedChange={(checked) => {
+                  if (checked) {
+                    onUpdate("configuration.micronaut", {
+                      security: {
+                        oauth2: {
+                          enabled: true,
+                          clients: {
+                            providerName: "",
+                            clientId: "",
+                            clientSecret: "",
+                            issuer: ""
+                          }
+                        }
+                      }
+                    });
+                  } else {
+                    onUpdate("configuration.micronaut", undefined);
+                  }
+                }}
               />
             </div>
             
-            {values.configuration?.oidcEnabled && (
+            {values.configuration?.micronaut && (
               <div className="space-y-4">
               <div>
                 <Label htmlFor="oidc-provider">OIDC Provider Name</Label>
