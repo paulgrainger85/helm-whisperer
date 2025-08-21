@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, Shield, RotateCcw } from "lucide-react";
 import { useState } from "react";
@@ -43,7 +44,20 @@ export const SSOConfig = ({ values, onUpdate, onReset }: SSOConfigProps) => {
         
         <CollapsibleContent>
           <CardContent className="space-y-4">
-            <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border">
+              <div className="space-y-1">
+                <Label htmlFor="oidc-enable" className="text-sm font-medium">Enable OIDC Provider</Label>
+                <p className="text-xs text-muted-foreground">Toggle to include SSO configuration in the YAML output</p>
+              </div>
+              <Switch
+                id="oidc-enable"
+                checked={values.configuration?.oidcEnabled || false}
+                onCheckedChange={(checked) => onUpdate("configuration.oidcEnabled", checked)}
+              />
+            </div>
+            
+            {values.configuration?.oidcEnabled && (
+              <div className="space-y-4">
               <div>
                 <Label htmlFor="oidc-provider">OIDC Provider Name</Label>
                 <Input
@@ -84,12 +98,13 @@ export const SSOConfig = ({ values, onUpdate, onReset }: SSOConfigProps) => {
                   onChange={(e) => onUpdate("configuration.micronaut.security.oauth2.clients.issuer", e.target.value)}
                 />
               </div>
-            </div>
+              </div>
+            )}
 
             <div className="bg-muted/50 p-4 rounded-lg border border-border mt-6">
               <p className="text-sm text-muted-foreground leading-relaxed">
-                <strong>Note:</strong> All fields must be filled for SSO configuration to be included in the generated YAML.
-                Leave empty to omit the entire SSO configuration block.
+                <strong>Note:</strong> Enable the toggle above to include SSO configuration. 
+                When enabled, all OIDC fields should be filled for proper configuration.
               </p>
             </div>
           </CardContent>

@@ -79,6 +79,7 @@ interface KestraHelmValues {
           };
         };
       };
+      oidcEnabled?: boolean;
   };
   deployments: {
     webserver: {
@@ -174,7 +175,8 @@ const Index = () => {
             }
           }
         }
-      }
+      },
+      oidcEnabled: false
     },
     deployments: {
       webserver: {

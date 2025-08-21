@@ -5,7 +5,7 @@ export const generateYaml = (values: any): string => {
     yamlLines.push('  '.repeat(indent) + line);
   };
 
-  const processObject = (obj: any, indent = 0) => {
+  const processObject = (obj: any, indent = 0, parentObj: any = null) => {
     Object.entries(obj).forEach(([key, value]) => {
       if (value === null || value === undefined) {
         return;
@@ -84,23 +84,26 @@ export const generateYaml = (values: any): string => {
         return;
       }
       
-      // Special handling for micronaut oauth2 - only include if configured
+      // Special handling for micronaut oauth2 - only include if OIDC is enabled
       if (key === 'micronaut' && typeof value === 'object' && (value as any).security?.oauth2?.clients) {
-        const clientsValue = (value as any).security.oauth2.clients;
-        if (clientsValue.providerName && clientsValue.providerName.trim() && 
-            clientsValue.clientId && clientsValue.clientId.trim() && 
-            clientsValue.clientSecret && clientsValue.clientSecret.trim() && 
-            clientsValue.issuer && clientsValue.issuer.trim()) {
-          addLine(`${displayKey}:`, indent);
-          addLine(`security:`, indent + 1);
-          addLine(`oauth2:`, indent + 2);
-          addLine(`enabled: true`, indent + 3);
-          addLine(`clients:`, indent + 3);
-          addLine(`${clientsValue.providerName}:`, indent + 4);
-          addLine(`client-id: ${formatValue(clientsValue.clientId)}`, indent + 5);
-          addLine(`client-secret: ${formatValue(clientsValue.clientSecret)}`, indent + 5);
-          addLine(`openid:`, indent + 5);
-          addLine(`issuer: ${formatValue(clientsValue.issuer)}`, indent + 6);
+        // Check if OIDC is enabled in the parent configuration
+        if (parentObj && parentObj.oidcEnabled) {
+          const clientsValue = (value as any).security.oauth2.clients;
+          if (clientsValue.providerName && clientsValue.providerName.trim() && 
+              clientsValue.clientId && clientsValue.clientId.trim() && 
+              clientsValue.clientSecret && clientsValue.clientSecret.trim() && 
+              clientsValue.issuer && clientsValue.issuer.trim()) {
+            addLine(`${displayKey}:`, indent);
+            addLine(`security:`, indent + 1);
+            addLine(`oauth2:`, indent + 2);
+            addLine(`enabled: true`, indent + 3);
+            addLine(`clients:`, indent + 3);
+            addLine(`${clientsValue.providerName}:`, indent + 4);
+            addLine(`client-id: ${formatValue(clientsValue.clientId)}`, indent + 5);
+            addLine(`client-secret: ${formatValue(clientsValue.clientSecret)}`, indent + 5);
+            addLine(`openid:`, indent + 5);
+            addLine(`issuer: ${formatValue(clientsValue.issuer)}`, indent + 6);
+          }
         }
         return;
       }
@@ -121,7 +124,7 @@ export const generateYaml = (values: any): string => {
       
       if (typeof value === 'object' && !Array.isArray(value)) {
         addLine(`${displayKey}:`, indent);
-        processObject(value, indent + 1);
+        processObject(value, indent + 1, obj);
       } else if (Array.isArray(value)) {
         if (value.length === 0) {
           addLine(`${displayKey}: []`, indent);
@@ -164,7 +167,7 @@ export const generateYaml = (values: any): string => {
 
   // Filter out empty values and generate YAML
   const filteredValues = filterEmptyValues(values);
-  processObject(filteredValues);
+  processObject(filteredValues, 0, filteredValues);
   
   return yamlLines.join('\n');
 };
