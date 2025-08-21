@@ -177,6 +177,11 @@ const filterEmptyValues = (obj: any): any => {
   if (typeof obj === 'object' && obj !== null) {
     const filtered: any = {};
     Object.entries(obj).forEach(([key, value]) => {
+      // Skip oidcEnabled completely - it should never appear in YAML
+      if (key === 'oidcEnabled') {
+        return;
+      }
+      
       if (value !== null && value !== undefined && value !== '') {
         if (typeof value === 'object') {
           const filteredValue = filterEmptyValues(value);
