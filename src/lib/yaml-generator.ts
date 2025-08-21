@@ -87,7 +87,10 @@ export const generateYaml = (values: any): string => {
       // Special handling for micronaut oauth2 - only include if configured
       if (key === 'micronaut' && typeof value === 'object' && (value as any).security?.oauth2?.clients) {
         const clientsValue = (value as any).security.oauth2.clients;
-        if (clientsValue.providerName && clientsValue.clientId && clientsValue.clientSecret && clientsValue.issuer) {
+        if (clientsValue.providerName && clientsValue.providerName.trim() && 
+            clientsValue.clientId && clientsValue.clientId.trim() && 
+            clientsValue.clientSecret && clientsValue.clientSecret.trim() && 
+            clientsValue.issuer && clientsValue.issuer.trim()) {
           addLine(`${displayKey}:`, indent);
           addLine(`security:`, indent + 1);
           addLine(`oauth2:`, indent + 2);
