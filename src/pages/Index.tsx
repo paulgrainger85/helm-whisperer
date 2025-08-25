@@ -164,8 +164,11 @@ const Index = () => {
       },
     },
     deployments: {
+      standalone: {
+        enabled: true 
+      },
       webserver: {
-        enabled: true
+        enabled: false
       },
       executor: {
         enabled: false
@@ -174,9 +177,6 @@ const Index = () => {
         enabled: false
       },
       scheduler: {
-        enabled: false
-      },
-      standalone: {
         enabled: false
       }
     },
