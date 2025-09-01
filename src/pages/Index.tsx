@@ -215,19 +215,39 @@ const Index = () => {
     },
     deployments: {
       standalone: {
-        enabled: true 
+        enabled: true,
+        resources: {
+          requests: { cpu: '', memory: '' },
+          limits: { cpu: '', memory: '' }
+        }
       },
       webserver: {
-        enabled: false
+        enabled: false,
+        resources: {
+          requests: { cpu: '', memory: '' },
+          limits: { cpu: '', memory: '' }
+        }
       },
       executor: {
-        enabled: false
+        enabled: false,
+        resources: {
+          requests: { cpu: '', memory: '' },
+          limits: { cpu: '', memory: '' }
+        }
       },
       worker: {
-        enabled: false
+        enabled: false,
+        resources: {
+          requests: { cpu: '', memory: '' },
+          limits: { cpu: '', memory: '' }
+        }
       },
       scheduler: {
-        enabled: false
+        enabled: false,
+        resources: {
+          requests: { cpu: '', memory: '' },
+          limits: { cpu: '', memory: '' }
+        }
       }
     },
     postgresql: {
