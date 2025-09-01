@@ -83,18 +83,68 @@ interface KestraHelmValues {
   deployments: {
     webserver: {
       enabled: boolean;
+      resources?: {
+        requests?: {
+          cpu?: string;
+          memory?: string;
+        };
+        limits?: {
+          cpu?: string;
+          memory?: string;
+        };
+      };
     };
     executor: {
       enabled: boolean;
+      resources?: {
+        requests?: {
+          cpu?: string;
+          memory?: string;
+        };
+        limits?: {
+          cpu?: string;
+          memory?: string;
+        };
+      };
     };
     worker: {
       enabled: boolean;
+      resources?: {
+        requests?: {
+          cpu?: string;
+          memory?: string;
+        };
+        limits?: {
+          cpu?: string;
+          memory?: string;
+        };
+      };
     };
     scheduler: {
       enabled: boolean;
+      resources?: {
+        requests?: {
+          cpu?: string;
+          memory?: string;
+        };
+        limits?: {
+          cpu?: string;
+          memory?: string;
+        };
+      };
     };
     standalone: {
       enabled: boolean;
+      resources?: {
+        requests?: {
+          cpu?: string;
+          memory?: string;
+        };
+        limits?: {
+          cpu?: string;
+          memory?: string;
+        };
+      };
     };
   };
   postgresql: {
