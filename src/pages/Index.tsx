@@ -11,6 +11,7 @@ import { DevelopmentConfig } from "@/components/DevelopmentConfig";
 import { YamlPreview } from "@/components/YamlPreview";
 import { generateYaml } from "@/lib/yaml-generator";
 import { useToast } from "@/hooks/use-toast";
+import { usePersistedState } from "@/hooks/use-persisted-state";
 
 interface KestraHelmValues {
   image: {
@@ -258,7 +259,7 @@ const Index = () => {
     }
   });
 
-  const [values, setValues] = useState<KestraHelmValues>(getDefaultValues());
+  const [values, setValues] = usePersistedState<KestraHelmValues>('kestra-helm-values', getDefaultValues());
 
   // Reset functions for each section
   const resetInstanceConfig = () => {
