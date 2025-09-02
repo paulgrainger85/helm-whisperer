@@ -74,7 +74,7 @@ export const KestraConfig = ({ values, onUpdate, onReset }: KestraConfigProps) =
               {values.configuration?.kestra?.secrets?.type && (
                 <div className="space-y-4">
                   {/* Azure Key Vault */}
-                  {values.configuration.kestra.secrets.type === 'azure-key-vault' && (
+                  {values.configuration?.kestra?.secrets?.type === 'azure-key-vault' && (
                     <div className="space-y-3 p-4 bg-muted/30 rounded-lg border">
                       <h5 className="text-sm font-medium">Azure Key Vault Configuration</h5>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -120,7 +120,7 @@ export const KestraConfig = ({ values, onUpdate, onReset }: KestraConfigProps) =
                   )}
 
                   {/* AWS Secrets Manager */}
-                  {values.configuration.kestra.secrets.type === 'aws-secrets-manager' && (
+                  {values.configuration?.kestra?.secrets?.type === 'aws-secrets-manager' && (
                     <div className="space-y-3 p-4 bg-muted/30 rounded-lg border">
                       <h5 className="text-sm font-medium">AWS Secrets Manager Configuration</h5>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -166,7 +166,7 @@ export const KestraConfig = ({ values, onUpdate, onReset }: KestraConfigProps) =
                   )}
 
                   {/* GCP Secret Manager */}
-                  {values.configuration.kestra.secrets.type === 'gcp-secret-manager' && (
+                  {values.configuration?.kestra?.secrets?.type === 'gcp-secret-manager' && (
                     <div className="space-y-3 p-4 bg-muted/30 rounded-lg border">
                       <h5 className="text-sm font-medium">GCP Secret Manager Configuration</h5>
                       <div className="grid grid-cols-1 gap-4">
@@ -195,7 +195,7 @@ export const KestraConfig = ({ values, onUpdate, onReset }: KestraConfigProps) =
                   )}
 
                   {/* HashiCorp Vault */}
-                  {values.configuration.kestra.secrets.type === 'hashicorp-vault' && (
+                  {values.configuration?.kestra?.secrets?.type === 'hashicorp-vault' && (
                     <div className="space-y-3 p-4 bg-muted/30 rounded-lg border">
                       <h5 className="text-sm font-medium">HashiCorp Vault Configuration</h5>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -241,7 +241,7 @@ export const KestraConfig = ({ values, onUpdate, onReset }: KestraConfigProps) =
                   )}
 
                   {/* Environment Variables */}
-                  {values.configuration.kestra.secrets.type === 'environment' && (
+                  {values.configuration?.kestra?.secrets?.type === 'environment' && (
                     <div className="space-y-3 p-4 bg-muted/30 rounded-lg border">
                       <h5 className="text-sm font-medium">Environment Variables Configuration</h5>
                       <p className="text-sm text-muted-foreground">
@@ -282,13 +282,13 @@ export const KestraConfig = ({ values, onUpdate, onReset }: KestraConfigProps) =
               {values.configuration?.kestra?.storage?.type && (
                 <div className="space-y-2">
                   <Label htmlFor="storage-config">
-                    {values.configuration.kestra.storage.type.toUpperCase()} Configuration
+                    {values.configuration?.kestra?.storage?.type?.toUpperCase()} Configuration
                   </Label>
                   <Textarea
                     id="storage-config"
-                    value={values.configuration?.kestra?.storage?.[values.configuration.kestra.storage.type] || ""}
-                    onChange={(e) => onUpdate(`configuration.kestra.storage.${values.configuration.kestra.storage.type}`, e.target.value)}
-                    placeholder={`Configure ${values.configuration.kestra.storage.type} settings (YAML format)...`}
+                    value={values.configuration?.kestra?.storage?.[values.configuration?.kestra?.storage?.type] || ""}
+                    onChange={(e) => onUpdate(`configuration.kestra.storage.${values.configuration?.kestra?.storage?.type}`, e.target.value)}
+                    placeholder={`Configure ${values.configuration?.kestra?.storage?.type} settings (YAML format)...`}
                     rows={6}
                     className="font-mono text-sm"
                   />
