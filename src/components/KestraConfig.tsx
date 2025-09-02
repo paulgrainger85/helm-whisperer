@@ -63,6 +63,7 @@ export const KestraConfig = ({ values, onUpdate, onReset }: KestraConfigProps) =
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="environment">Environment Variables</SelectItem>
+                    <SelectItem value="jdbc">JDBC Database</SelectItem>
                     <SelectItem value="azure-key-vault">Azure Key Vault</SelectItem>
                     <SelectItem value="aws-secrets-manager">AWS Secrets Manager</SelectItem>
                     <SelectItem value="gcp-secret-manager">GCP Secret Manager</SelectItem>
@@ -234,6 +235,54 @@ export const KestraConfig = ({ values, onUpdate, onReset }: KestraConfigProps) =
                             value={values.configuration?.kestra?.secrets?.hashicorpVault?.namespace || ""}
                             onChange={(e) => onUpdate('configuration.kestra.secrets.hashicorpVault.namespace', e.target.value)}
                             placeholder="vault namespace"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* JDBC Database */}
+                  {values.configuration?.kestra?.secrets?.type === 'jdbc' && (
+                    <div className="space-y-3 p-4 bg-muted/30 rounded-lg border">
+                      <h5 className="text-sm font-medium">JDBC Database Configuration</h5>
+                      <div className="grid grid-cols-1 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="jdbc-url">Database URL</Label>
+                          <Input
+                            id="jdbc-url"
+                            value={values.configuration?.kestra?.secrets?.jdbc?.url || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.secrets.jdbc.url', e.target.value)}
+                            placeholder="jdbc:postgresql://localhost:5432/kestra"
+                          />
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="jdbc-username">Username</Label>
+                            <Input
+                              id="jdbc-username"
+                              value={values.configuration?.kestra?.secrets?.jdbc?.username || ""}
+                              onChange={(e) => onUpdate('configuration.kestra.secrets.jdbc.username', e.target.value)}
+                              placeholder="database username"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="jdbc-password">Password</Label>
+                            <Input
+                              id="jdbc-password"
+                              type="password"
+                              value={values.configuration?.kestra?.secrets?.jdbc?.password || ""}
+                              onChange={(e) => onUpdate('configuration.kestra.secrets.jdbc.password', e.target.value)}
+                              placeholder="database password"
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="jdbc-table">Secrets Table Name</Label>
+                          <Input
+                            id="jdbc-table"
+                            value={values.configuration?.kestra?.secrets?.jdbc?.table || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.secrets.jdbc.table', e.target.value)}
+                            placeholder="secrets (default table name)"
                           />
                         </div>
                       </div>
