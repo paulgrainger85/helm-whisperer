@@ -244,47 +244,16 @@ export const KestraConfig = ({ values, onUpdate, onReset }: KestraConfigProps) =
                   {/* JDBC Database */}
                   {values.configuration?.kestra?.secrets?.type === 'jdbc' && (
                     <div className="space-y-3 p-4 bg-muted/30 rounded-lg border">
-                      <h5 className="text-sm font-medium">JDBC Database Configuration</h5>
-                      <div className="grid grid-cols-1 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="jdbc-url">Database URL</Label>
-                          <Input
-                            id="jdbc-url"
-                            value={values.configuration?.kestra?.secrets?.jdbc?.url || ""}
-                            onChange={(e) => onUpdate('configuration.kestra.secrets.jdbc.url', e.target.value)}
-                            placeholder="jdbc:postgresql://localhost:5432/kestra"
-                          />
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label htmlFor="jdbc-username">Username</Label>
-                            <Input
-                              id="jdbc-username"
-                              value={values.configuration?.kestra?.secrets?.jdbc?.username || ""}
-                              onChange={(e) => onUpdate('configuration.kestra.secrets.jdbc.username', e.target.value)}
-                              placeholder="database username"
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="jdbc-password">Password</Label>
-                            <Input
-                              id="jdbc-password"
-                              type="password"
-                              value={values.configuration?.kestra?.secrets?.jdbc?.password || ""}
-                              onChange={(e) => onUpdate('configuration.kestra.secrets.jdbc.password', e.target.value)}
-                              placeholder="database password"
-                            />
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="jdbc-table">Secrets Table Name</Label>
-                          <Input
-                            id="jdbc-table"
-                            value={values.configuration?.kestra?.secrets?.jdbc?.table || ""}
-                            onChange={(e) => onUpdate('configuration.kestra.secrets.jdbc.table', e.target.value)}
-                            placeholder="secrets (default table name)"
-                          />
-                        </div>
+                      <h5 className="text-sm font-medium">JDBC Secret Configuration</h5>
+                      <div className="space-y-2">
+                        <Label htmlFor="jdbc-secret">Secret Key</Label>
+                        <Input
+                          id="jdbc-secret"
+                          type="password"
+                          value={values.configuration?.kestra?.secrets?.jdbc?.secret || ""}
+                          onChange={(e) => onUpdate('configuration.kestra.secrets.jdbc.secret', e.target.value)}
+                          placeholder="your-secret-key"
+                        />
                       </div>
                     </div>
                   )}
