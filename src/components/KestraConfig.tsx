@@ -62,31 +62,194 @@ export const KestraConfig = ({ values, onUpdate, onReset }: KestraConfigProps) =
                     <SelectValue placeholder="Select secret manager type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="jdbc">JDBC</SelectItem>
-                    <SelectItem value="elasticsearch">Elasticsearch</SelectItem>
-                    <SelectItem value="azure">Azure</SelectItem>
-                    <SelectItem value="aws">AWS</SelectItem>
-                    <SelectItem value="google">Google</SelectItem>
-                    <SelectItem value="vault">Vault</SelectItem>
-                    <SelectItem value="cyberark">CyberArk</SelectItem>
+                    <SelectItem value="environment">Environment Variables</SelectItem>
+                    <SelectItem value="azure-key-vault">Azure Key Vault</SelectItem>
+                    <SelectItem value="aws-secrets-manager">AWS Secrets Manager</SelectItem>
+                    <SelectItem value="gcp-secret-manager">GCP Secret Manager</SelectItem>
+                    <SelectItem value="hashicorp-vault">HashiCorp Vault</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               {values.configuration?.kestra?.secrets?.type && (
-                <div className="space-y-2">
-                  <Label htmlFor="secrets-config">
-                    {values.configuration.kestra.secrets.type.charAt(0).toUpperCase() + 
-                     values.configuration.kestra.secrets.type.slice(1)} Configuration
-                  </Label>
-                  <Textarea
-                    id="secrets-config"
-                    value={values.configuration?.kestra?.secrets?.[values.configuration.kestra.secrets.type] || ""}
-                    onChange={(e) => onUpdate(`configuration.kestra.secrets.${values.configuration.kestra.secrets.type}`, e.target.value)}
-                    placeholder={`Configure ${values.configuration.kestra.secrets.type} settings (YAML format)...`}
-                    rows={6}
-                    className="font-mono text-sm"
-                  />
+                <div className="space-y-4">
+                  {/* Azure Key Vault */}
+                  {values.configuration.kestra.secrets.type === 'azure-key-vault' && (
+                    <div className="space-y-3 p-4 bg-muted/30 rounded-lg border">
+                      <h5 className="text-sm font-medium">Azure Key Vault Configuration</h5>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="azure-tenant-id">Tenant ID</Label>
+                          <Input
+                            id="azure-tenant-id"
+                            value={values.configuration?.kestra?.secrets?.azureKeyVault?.clientSecret?.tenantId || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.secrets.azureKeyVault.clientSecret.tenantId', e.target.value)}
+                            placeholder="Azure tenant ID"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="azure-client-id">Client ID</Label>
+                          <Input
+                            id="azure-client-id"
+                            value={values.configuration?.kestra?.secrets?.azureKeyVault?.clientSecret?.clientId || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.secrets.azureKeyVault.clientSecret.clientId', e.target.value)}
+                            placeholder="Azure client ID"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="azure-client-secret">Client Secret</Label>
+                          <Input
+                            id="azure-client-secret"
+                            type="password"
+                            value={values.configuration?.kestra?.secrets?.azureKeyVault?.clientSecret?.clientSecret || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.secrets.azureKeyVault.clientSecret.clientSecret', e.target.value)}
+                            placeholder="Azure client secret"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="azure-vault-url">Vault URL</Label>
+                          <Input
+                            id="azure-vault-url"
+                            value={values.configuration?.kestra?.secrets?.azureKeyVault?.vaultUrl || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.secrets.azureKeyVault.vaultUrl', e.target.value)}
+                            placeholder="https://your-vault.vault.azure.net/"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* AWS Secrets Manager */}
+                  {values.configuration.kestra.secrets.type === 'aws-secrets-manager' && (
+                    <div className="space-y-3 p-4 bg-muted/30 rounded-lg border">
+                      <h5 className="text-sm font-medium">AWS Secrets Manager Configuration</h5>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="aws-region">Region</Label>
+                          <Input
+                            id="aws-region"
+                            value={values.configuration?.kestra?.secrets?.awsSecretsManager?.region || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.secrets.awsSecretsManager.region', e.target.value)}
+                            placeholder="us-east-1"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="aws-access-key">Access Key ID</Label>
+                          <Input
+                            id="aws-access-key"
+                            value={values.configuration?.kestra?.secrets?.awsSecretsManager?.accessKeyId || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.secrets.awsSecretsManager.accessKeyId', e.target.value)}
+                            placeholder="AWS access key ID"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="aws-secret-key">Secret Access Key</Label>
+                          <Input
+                            id="aws-secret-key"
+                            type="password"
+                            value={values.configuration?.kestra?.secrets?.awsSecretsManager?.secretAccessKey || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.secrets.awsSecretsManager.secretAccessKey', e.target.value)}
+                            placeholder="AWS secret access key"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="aws-session-token">Session Token (Optional)</Label>
+                          <Input
+                            id="aws-session-token"
+                            value={values.configuration?.kestra?.secrets?.awsSecretsManager?.sessionToken || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.secrets.awsSecretsManager.sessionToken', e.target.value)}
+                            placeholder="AWS session token"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* GCP Secret Manager */}
+                  {values.configuration.kestra.secrets.type === 'gcp-secret-manager' && (
+                    <div className="space-y-3 p-4 bg-muted/30 rounded-lg border">
+                      <h5 className="text-sm font-medium">GCP Secret Manager Configuration</h5>
+                      <div className="grid grid-cols-1 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="gcp-project">Project ID</Label>
+                          <Input
+                            id="gcp-project"
+                            value={values.configuration?.kestra?.secrets?.gcpSecretManager?.project || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.secrets.gcpSecretManager.project', e.target.value)}
+                            placeholder="your-gcp-project-id"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="gcp-service-account">Service Account Key (JSON)</Label>
+                          <Textarea
+                            id="gcp-service-account"
+                            value={values.configuration?.kestra?.secrets?.gcpSecretManager?.serviceAccountKey || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.secrets.gcpSecretManager.serviceAccountKey', e.target.value)}
+                            placeholder='{"type": "service_account", "project_id": "...", ...}'
+                            rows={4}
+                            className="font-mono text-sm"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* HashiCorp Vault */}
+                  {values.configuration.kestra.secrets.type === 'hashicorp-vault' && (
+                    <div className="space-y-3 p-4 bg-muted/30 rounded-lg border">
+                      <h5 className="text-sm font-medium">HashiCorp Vault Configuration</h5>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="vault-address">Vault Address</Label>
+                          <Input
+                            id="vault-address"
+                            value={values.configuration?.kestra?.secrets?.hashicorpVault?.address || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.secrets.hashicorpVault.address', e.target.value)}
+                            placeholder="https://vault.example.com:8200"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="vault-token">Token</Label>
+                          <Input
+                            id="vault-token"
+                            type="password"
+                            value={values.configuration?.kestra?.secrets?.hashicorpVault?.token || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.secrets.hashicorpVault.token', e.target.value)}
+                            placeholder="Vault token"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="vault-path">Engine Path</Label>
+                          <Input
+                            id="vault-path"
+                            value={values.configuration?.kestra?.secrets?.hashicorpVault?.enginePath || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.secrets.hashicorpVault.enginePath', e.target.value)}
+                            placeholder="secret/"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="vault-namespace">Namespace (Optional)</Label>
+                          <Input
+                            id="vault-namespace"
+                            value={values.configuration?.kestra?.secrets?.hashicorpVault?.namespace || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.secrets.hashicorpVault.namespace', e.target.value)}
+                            placeholder="vault namespace"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Environment Variables */}
+                  {values.configuration.kestra.secrets.type === 'environment' && (
+                    <div className="space-y-3 p-4 bg-muted/30 rounded-lg border">
+                      <h5 className="text-sm font-medium">Environment Variables Configuration</h5>
+                      <p className="text-sm text-muted-foreground">
+                        Secrets will be loaded from environment variables. No additional configuration required.
+                        Variables should follow the pattern: KESTRA_SECRET_[SECRET_NAME]
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
