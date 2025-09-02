@@ -21,7 +21,17 @@ export const generateYaml = (values: any): string => {
         addLine(`type: ${formatValue(secretsValue.type)}`, indent + 1);
         
         // Add the specific secret manager configuration if it exists
-        const secretConfig = secretsValue[secretsValue.type];
+        // Map kebab-case types to camelCase property names
+        const typeMap: { [key: string]: string } = {
+          'azure-key-vault': 'azureKeyVault',
+          'aws-secrets-manager': 'awsSecretsManager',
+          'gcp-secret-manager': 'gcpSecretManager',
+          'hashicorp-vault': 'hashicorpVault',
+          'jdbc': 'jdbc',
+          'environment': 'environment'
+        };
+        const propertyName = typeMap[secretsValue.type] || secretsValue.type;
+        const secretConfig = secretsValue[propertyName];
         if (secretConfig) {
           // Handle different types of secret configurations
           if (typeof secretConfig === 'string' && secretConfig.trim()) {

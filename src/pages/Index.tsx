@@ -35,13 +35,33 @@ interface KestraHelmValues {
       kestra: {
         secrets: {
           type: string;
-          jdbc?: string;
-          elasticsearch?: string;
-          azure?: string;
-          aws?: string;
-          google?: string;
-          vault?: string;
-          cyberark?: string;
+          jdbc?: {
+            secret: string;
+          };
+          azureKeyVault?: {
+            clientSecret: {
+              tenantId: string;
+              clientId: string;
+              clientSecret: string;
+            };
+            vaultUrl: string;
+          };
+          awsSecretsManager?: {
+            region: string;
+            accessKeyId: string;
+            secretAccessKey: string;
+            sessionToken?: string;
+          };
+          gcpSecretManager?: {
+            project: string;
+            serviceAccountKey: string;
+          };
+          hashicorpVault?: {
+            address: string;
+            token: string;
+            enginePath: string;
+            namespace?: string;
+          };
         };
         storage: {
           type: string;
@@ -180,14 +200,7 @@ const Index = () => {
       },
       kestra: {
         secrets: {
-          type: "",
-          jdbc: "",
-          elasticsearch: "",
-          azure: "",
-          aws: "",
-          google: "",
-          vault: "",
-          cyberark: ""
+          type: ""
         },
         storage: {
           type: "",
