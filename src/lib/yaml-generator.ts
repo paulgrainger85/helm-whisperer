@@ -22,13 +22,20 @@ export const generateYaml = (values: any): string => {
         
         // Add the specific secret manager configuration if it exists
         const secretConfig = secretsValue[secretsValue.type];
-        if (secretConfig && secretConfig.trim()) {
-          addLine(`${secretsValue.type}:`, indent + 1);
-          // Parse the YAML-like config and add with proper indentation
-          const configLines = secretConfig.split('\n').filter((line: string) => line.trim());
-          configLines.forEach((line: string) => {
-            addLine(line.trim(), indent + 2);
-          });
+        if (secretConfig) {
+          // Handle different types of secret configurations
+          if (typeof secretConfig === 'string' && secretConfig.trim()) {
+            addLine(`${secretsValue.type}:`, indent + 1);
+            // Parse the YAML-like config and add with proper indentation
+            const configLines = secretConfig.split('\n').filter((line: string) => line.trim());
+            configLines.forEach((line: string) => {
+              addLine(line.trim(), indent + 2);
+            });
+          } else if (typeof secretConfig === 'object') {
+            // Handle object-based configurations (like our new secret manager configs)
+            addLine(`${secretsValue.type}:`, indent + 1);
+            processObject(secretConfig, indent + 2);
+          }
         }
         return;
       }
@@ -41,13 +48,18 @@ export const generateYaml = (values: any): string => {
         
         // Add the specific storage configuration if it exists
         const storageConfig = storageValue[storageValue.type];
-        if (storageConfig && storageConfig.trim()) {
-          addLine(`${storageValue.type}:`, indent + 1);
-          // Parse the YAML-like config and add with proper indentation
-          const configLines = storageConfig.split('\n').filter((line: string) => line.trim());
-          configLines.forEach((line: string) => {
-            addLine(line.trim(), indent + 2);
-          });
+        if (storageConfig) {
+          if (typeof storageConfig === 'string' && storageConfig.trim()) {
+            addLine(`${storageValue.type}:`, indent + 1);
+            // Parse the YAML-like config and add with proper indentation
+            const configLines = storageConfig.split('\n').filter((line: string) => line.trim());
+            configLines.forEach((line: string) => {
+              addLine(line.trim(), indent + 2);
+            });
+          } else if (typeof storageConfig === 'object') {
+            addLine(`${storageValue.type}:`, indent + 1);
+            processObject(storageConfig, indent + 2);
+          }
         }
         return;
       }
@@ -65,7 +77,7 @@ export const generateYaml = (values: any): string => {
         });
         
         // Add options content verbatim
-        if (postgresValue.options && postgresValue.options.trim()) {
+        if (postgresValue.options && typeof postgresValue.options === 'string' && postgresValue.options.trim()) {
           const optionsLines = postgresValue.options.split('\n').filter((line: string) => line.trim());
           optionsLines.forEach((line: string) => {
             addLine(line.trim(), indent + 1);
@@ -94,15 +106,15 @@ export const generateYaml = (values: any): string => {
         addLine(`clients:`, indent + 3);
         
         // Only add provider section if provider name is set
-        if (clientsValue.providerName && clientsValue.providerName.trim()) {
+        if (clientsValue.providerName && typeof clientsValue.providerName === 'string' && clientsValue.providerName.trim()) {
           addLine(`${clientsValue.providerName}:`, indent + 4);
-          if (clientsValue.clientId && clientsValue.clientId.trim()) {
+          if (clientsValue.clientId && typeof clientsValue.clientId === 'string' && clientsValue.clientId.trim()) {
             addLine(`client-id: ${formatValue(clientsValue.clientId)}`, indent + 5);
           }
-          if (clientsValue.clientSecret && clientsValue.clientSecret.trim()) {
+          if (clientsValue.clientSecret && typeof clientsValue.clientSecret === 'string' && clientsValue.clientSecret.trim()) {
             addLine(`client-secret: ${formatValue(clientsValue.clientSecret)}`, indent + 5);
           }
-          if (clientsValue.issuer && clientsValue.issuer.trim()) {
+          if (clientsValue.issuer && typeof clientsValue.issuer === 'string' && clientsValue.issuer.trim()) {
             addLine(`openid:`, indent + 5);
             addLine(`issuer: ${formatValue(clientsValue.issuer)}`, indent + 6);
           }
