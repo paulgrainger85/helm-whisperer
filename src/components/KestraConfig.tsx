@@ -298,18 +298,182 @@ export const KestraConfig = ({ values, onUpdate, onReset }: KestraConfigProps) =
               </div>
 
               {values.configuration?.kestra?.storage?.type && (
-                <div className="space-y-2">
-                  <Label htmlFor="storage-config">
-                    {values.configuration?.kestra?.storage?.type?.toUpperCase()} Configuration
-                  </Label>
-                  <Textarea
-                    id="storage-config"
-                    value={values.configuration?.kestra?.storage?.[values.configuration?.kestra?.storage?.type] || ""}
-                    onChange={(e) => onUpdate(`configuration.kestra.storage.${values.configuration?.kestra?.storage?.type}`, e.target.value)}
-                    placeholder={`Configure ${values.configuration?.kestra?.storage?.type} settings (YAML format)...`}
-                    rows={6}
-                    className="font-mono text-sm"
-                  />
+                <div className="space-y-4">
+                  {/* S3 Configuration */}
+                  {values.configuration?.kestra?.storage?.type === 's3' && (
+                    <div className="space-y-3 p-4 bg-muted/30 rounded-lg border">
+                      <h5 className="text-sm font-medium">S3 Configuration</h5>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="s3-access-key">Access Key</Label>
+                          <Input
+                            id="s3-access-key"
+                            value={values.configuration?.kestra?.storage?.s3?.accessKey || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.storage.s3.accessKey', e.target.value)}
+                            placeholder="Your AWS access key"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="s3-secret-key">Secret Key</Label>
+                          <Input
+                            id="s3-secret-key"
+                            type="password"
+                            value={values.configuration?.kestra?.storage?.s3?.secretKey || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.storage.s3.secretKey', e.target.value)}
+                            placeholder="Your AWS secret key"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="s3-region">Region</Label>
+                          <Input
+                            id="s3-region"
+                            value={values.configuration?.kestra?.storage?.s3?.region || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.storage.s3.region', e.target.value)}
+                            placeholder="us-east-1"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="s3-bucket">Bucket</Label>
+                          <Input
+                            id="s3-bucket"
+                            value={values.configuration?.kestra?.storage?.s3?.bucket || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.storage.s3.bucket', e.target.value)}
+                            placeholder="your-kestra-bucket"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="s3-endpoint">Endpoint (Optional)</Label>
+                          <Input
+                            id="s3-endpoint"
+                            value={values.configuration?.kestra?.storage?.s3?.endpoint || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.storage.s3.endpoint', e.target.value)}
+                            placeholder="Custom S3 endpoint URL"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* GCS Configuration */}
+                  {values.configuration?.kestra?.storage?.type === 'gcs' && (
+                    <div className="space-y-3 p-4 bg-muted/30 rounded-lg border">
+                      <h5 className="text-sm font-medium">Google Cloud Storage Configuration</h5>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="gcs-project-id">Project ID</Label>
+                          <Input
+                            id="gcs-project-id"
+                            value={values.configuration?.kestra?.storage?.gcs?.projectId || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.storage.gcs.projectId', e.target.value)}
+                            placeholder="your-gcp-project-id"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="gcs-bucket">Bucket</Label>
+                          <Input
+                            id="gcs-bucket"
+                            value={values.configuration?.kestra?.storage?.gcs?.bucket || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.storage.gcs.bucket', e.target.value)}
+                            placeholder="your-kestra-bucket"
+                          />
+                        </div>
+                        <div className="space-y-2 md:col-span-2">
+                          <Label htmlFor="gcs-service-account">Service Account JSON (Optional)</Label>
+                          <Textarea
+                            id="gcs-service-account"
+                            value={values.configuration?.kestra?.storage?.gcs?.serviceAccount || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.storage.gcs.serviceAccount', e.target.value)}
+                            placeholder="Paste service account JSON key here (leave empty to use default credentials)"
+                            rows={4}
+                            className="font-mono text-sm"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Azure Configuration */}
+                  {values.configuration?.kestra?.storage?.type === 'azure' && (
+                    <div className="space-y-3 p-4 bg-muted/30 rounded-lg border">
+                      <h5 className="text-sm font-medium">Azure Blob Storage Configuration</h5>
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="azure-connection-string">Connection String</Label>
+                          <Input
+                            id="azure-connection-string"
+                            type="password"
+                            value={values.configuration?.kestra?.storage?.azure?.connectionString || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.storage.azure.connectionString', e.target.value)}
+                            placeholder="DefaultEndpointsProtocol=https;AccountName=..."
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="azure-container">Container</Label>
+                          <Input
+                            id="azure-container"
+                            value={values.configuration?.kestra?.storage?.azure?.container || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.storage.azure.container', e.target.value)}
+                            placeholder="kestra-storage"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* MinIO Configuration */}
+                  {values.configuration?.kestra?.storage?.type === 'minio' && (
+                    <div className="space-y-3 p-4 bg-muted/30 rounded-lg border">
+                      <h5 className="text-sm font-medium">MinIO Configuration</h5>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="minio-endpoint">Endpoint</Label>
+                          <Input
+                            id="minio-endpoint"
+                            value={values.configuration?.kestra?.storage?.minio?.endpoint || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.storage.minio.endpoint', e.target.value)}
+                            placeholder="http://minio.example.com:9000"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="minio-access-key">Access Key</Label>
+                          <Input
+                            id="minio-access-key"
+                            value={values.configuration?.kestra?.storage?.minio?.accessKey || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.storage.minio.accessKey', e.target.value)}
+                            placeholder="minioadmin"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="minio-secret-key">Secret Key</Label>
+                          <Input
+                            id="minio-secret-key"
+                            type="password"
+                            value={values.configuration?.kestra?.storage?.minio?.secretKey || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.storage.minio.secretKey', e.target.value)}
+                            placeholder="minioadmin"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="minio-region">Region</Label>
+                          <Input
+                            id="minio-region"
+                            value={values.configuration?.kestra?.storage?.minio?.region || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.storage.minio.region', e.target.value)}
+                            placeholder="us-east-1"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="minio-bucket">Bucket</Label>
+                          <Input
+                            id="minio-bucket"
+                            value={values.configuration?.kestra?.storage?.minio?.bucket || ""}
+                            onChange={(e) => onUpdate('configuration.kestra.storage.minio.bucket', e.target.value)}
+                            placeholder="kestra"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

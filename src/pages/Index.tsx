@@ -65,10 +65,29 @@ interface KestraHelmValues {
         };
         storage: {
           type: string;
-          s3?: string;
-          gcs?: string;
-          azure?: string;
-          minio?: string;
+          s3?: {
+            accessKey: string;
+            secretKey: string;
+            region: string;
+            bucket: string;
+            endpoint?: string;
+          };
+          gcs?: {
+            projectId: string;
+            bucket: string;
+            serviceAccount?: string;
+          };
+          azure?: {
+            connectionString: string;
+            container: string;
+          };
+          minio?: {
+            endpoint: string;
+            accessKey: string;
+            secretKey: string;
+            region: string;
+            bucket: string;
+          };
         };
         encryption: {
           'secret-key': string;
@@ -203,11 +222,7 @@ const Index = () => {
           type: ""
         },
         storage: {
-          type: "",
-          s3: "",
-          gcs: "",
-          azure: "",
-          minio: ""
+          type: ""
         },
         encryption: {
           'secret-key': ""
